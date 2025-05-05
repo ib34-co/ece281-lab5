@@ -24,12 +24,12 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 -- Uncomment the following library declaration if instantiating
 -- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
+library UNISIM;
+use UNISIM.VComponents.all;
 
 entity controller_fsm is
     Port ( i_reset : in STD_LOGIC;
@@ -38,8 +38,27 @@ entity controller_fsm is
 end controller_fsm;
 
 architecture FSM of controller_fsm is
-
+signal f_cycle :STD_LOGIC_VECTOR (3 downto 0);
 begin
+Controller_proc : process(i_adv, i_reset)
+begin
+if i_reset = '1' then
+f_cycle <= "000";
+end if;
+if i_adv='1' and f_cycle="000" then
+f_cycle <= "001";
+end if;
+if i_adv='1' and f_cycle="001" then
+f_cycle <= "010";
+end if;
+if i_adv='1' and f_cycle="010" then
+f_cycle <= "011";
+end if;
+if i_adv='1' and f_cycle="011" then
+f_cycle <= "000";
+end if;
+o_cycle<=f_cycle;
+end process Controller_proc;
 
 
 end FSM;
