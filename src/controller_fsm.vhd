@@ -43,19 +43,19 @@ begin
 Controller_proc : process(i_adv, i_reset)
 begin
 if i_reset = '1' then
-f_cycle <= "000";
+f_cycle <= "0000";
 end if;
-if i_adv='1' and f_cycle="000" then
-f_cycle <= "001";
+if i_adv='1' and f_cycle="0000" then
+f_cycle <= "0001";
 end if;
-if i_adv='1' and f_cycle="001" then
-f_cycle <= "010";
+if i_adv='1' and f_cycle="0001" then
+f_cycle <= "0010";
 end if;
-if i_adv='1' and f_cycle="010" then
-f_cycle <= "011";
+if i_adv='1' and f_cycle="0010" then
+f_cycle <= "0011";
 end if;
-if i_adv='1' and f_cycle="011" then
-f_cycle <= "000";
+if i_adv='1' and f_cycle="0011" then
+f_cycle <= "0000";
 end if;
 o_cycle<=f_cycle;
 end process Controller_proc;
