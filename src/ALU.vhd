@@ -33,7 +33,7 @@ use UNISIM.VComponents.all;
 
 entity ALU is
     Port ( i_reset : in STD_LOGIC;
-    i_A : in STD_LOGIC_VECTOR (7 downto 0);
+           i_A : in STD_LOGIC_VECTOR (7 downto 0);
            i_B : in STD_LOGIC_VECTOR (7 downto 0);
            i_op : in STD_LOGIC_VECTOR (2 downto 0);
            o_result : out STD_LOGIC_VECTOR (7 downto 0);
