@@ -47,6 +47,10 @@ signal r_c: unsigned (8 downto 0);
 begin
 ALU_result : process(i_A,i_B, i_op)
 begin
+if i_reset='1' then
+f_result<="0000000";
+f_flags<="0000";
+end if;
 if i_op="000" then
 f_result <= std_logic_vector(signed(i_A) + signed(i_B));
 r_c <= resize(unsigned(i_A), 9) + resize(unsigned(i_B), 9);
