@@ -42,7 +42,10 @@ end ALU;
 
 architecture Behavioral of ALU is
 signal f_result : STD_LOGIC_VECTOR (7 downto 0);
-signal f_flags : STD_LOGIC_VECTOR (3 downto 0);
+    signal N_flag : std_logic;  -- Negative
+    signal Z_flag : std_logic;  -- Zero
+    signal C_flag : std_logic;  -- Carry
+    signal V_flag : std_logic;  -- Overflow
 signal r_c: unsigned (8 downto 0);
 begin
 ALU_result : process(i_A,i_B, i_op)
@@ -50,12 +53,12 @@ begin
 if i_op="000" then
 f_result <= std_logic_vector(signed(i_A) + signed(i_B));
 r_c <= resize(unsigned(i_A), 9) + resize(unsigned(i_B), 9);
-f_flags<="0000";
+C_flag<='1';
 end if;
 if i_op="001" then
 f_result <= std_logic_vector(signed(i_A) - signed(i_B));
 r_c <= resize(unsigned(i_A), 9) + resize(unsigned(i_B), 9);
-f_flags<="0010";
+C_flag<='1';
 end if;
 if i_op="010" then
 f_result <= std_logic_vector(signed(i_A) and signed(i_B));
@@ -64,15 +67,15 @@ if i_op="011" then
 f_result <= std_logic_vector(signed(i_A) or signed(i_B));
 end if;
 if f_result(7)='1' then
-f_flags<="1000";
+N_flag<='1';
 end if;
 if f_result="000000000" then
-f_flags<="0000";
+Z_flag<='1';
 end if;
 if i_op(1)='0' and ((f_result(7)='1' and i_A(7)='0' and i_B(7)='0') or (f_result(7)='0' and i_A(7)='1' and i_B(7)='1')) then
-f_flags<="0001";
+V_flag<='1';
 end if;
 end process ALU_result;
 o_result<=f_result;
-o_flags<=f_flags;
+o_flags <= N_flag & Z_flag & C_flag & V_flag;
 end Behavioral;
