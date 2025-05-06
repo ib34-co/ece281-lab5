@@ -46,19 +46,23 @@ signal f_result : STD_LOGIC_VECTOR (7 downto 0);
     signal Z_flag : std_logic;  -- Zero
     signal C_flag : std_logic;  -- Carry
     signal V_flag : std_logic;  -- Overflow
-signal r_c: unsigned (8 downto 0);
+signal r_c: STD_LOGIC_VECTOR (8 downto 0);
 begin
 ALU_result : process(i_A,i_B, i_op)
 begin
 if i_op="000" then
 f_result <= std_logic_vector(signed(i_A) + signed(i_B));
-r_c <= resize(unsigned(i_A), 9) + resize(unsigned(i_B), 9);
+r_c <= STD_LOGIC_VECTOR(resize(unsigned(i_A), 9) + resize(unsigned(i_B), 9));
 C_flag<=r_c(8);
+else 
+C_flag<='0';
 end if;
 if i_op="001" then
 f_result <= std_logic_vector(signed(i_A) - signed(i_B));
-r_c <= resize(unsigned(i_A), 9) + resize(unsigned(i_B), 9);
+r_c <= STD_LOGIC_VECTOR(resize(unsigned(i_A), 9) + resize(unsigned(i_B), 9));
 C_flag<=r_c(8);
+else 
+C_flag<='0';
 end if;
 if i_op="010" then
 f_result <= std_logic_vector(signed(i_A) and signed(i_B));
@@ -66,12 +70,20 @@ end if;
 if i_op="011" then
 f_result <= std_logic_vector(signed(i_A) or signed(i_B));
 end if;
- N_flag <= f_result(7);
-if r_c ="00000000" then
- Z_flag <= '1';
+if f_result(7)='1' then
+ N_flag <= '1';
+ else 
+N_flag<='0';
+end if;
+if f_result ="0000000" then
+Z_flag <= '1';
+ else 
+Z_flag<='0';
  end if;
 if i_op(1)='0' and ((f_result(7)='1' and i_A(7)='0' and i_B(7)='0') or (f_result(7)='0' and i_A(7)='1' and i_B(7)='1')) then
 V_flag<='1';
+else 
+V_flag<='0';
 end if;
 end process ALU_result;
 o_result<=f_result;
